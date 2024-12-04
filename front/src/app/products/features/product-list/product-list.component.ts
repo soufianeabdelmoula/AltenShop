@@ -6,6 +6,8 @@ import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
+import { CommonModule } from "@angular/common"; 
+import { CartService } from "app/products/data-access/cart.service";
 
 const emptyProduct: Product = {
   id: 0,
@@ -29,7 +31,7 @@ const emptyProduct: Product = {
   templateUrl: "./product-list.component.html",
   styleUrls: ["./product-list.component.scss"],
   standalone: true,
-  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent],
+  imports: [DataViewModule, CardModule, ButtonModule, CommonModule,  DialogModule, ProductFormComponent],
 })
 export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
@@ -39,10 +41,14 @@ export class ProductListComponent implements OnInit {
   public isDialogVisible = false;
   public isCreation = false;
   public readonly editedProduct = signal<Product>(emptyProduct);
+  public readonly cart = this.productsService.cart;  // Liez le panier
 
   ngOnInit() {
     this.productsService.get().subscribe();
   }
+  constructor(private cartService: CartService) {}
+
+
 
   public onCreate() {
     this.isCreation = true;
@@ -76,4 +82,22 @@ export class ProductListComponent implements OnInit {
   private closeDialog() {
     this.isDialogVisible = false;
   }
+  public get productsList() {
+    return this.productsService.products();
+}
+  
+  
+  
+addToCart(product: Product): void {
+  // S'assurer que product est défini avant d'ajouter
+  if (product) {
+    this.cartService.addToCart(product);
+  } else {
+    console.error('Produit non défini');
+  }
+}
+    public getCartCount(): string {
+      return this.productsService.getCartCount() + '';
+    }
+    
 }
