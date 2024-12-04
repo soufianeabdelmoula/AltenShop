@@ -5,9 +5,11 @@
     <div class="p-toolbar-group-center">
         {{ title }}
     </div>
-    <div class="p-toolbar-group-end">
+    <div class="p-toolbar-group-end" [routerLink]="'/cart'" style="cursor: pointer;">
         <i class="pi pi-shopping-cart" style="font-size: 2rem"></i>
+        <span class="badge">{{ getCartCount() }}</span>
     </div>
+    
 </p-toolbar>
 <p-splitter 
     [panelSizes]="[20, 80]" 
@@ -23,3 +25,36 @@
         </div>
     </ng-template>
 </p-splitter>
+<p-menu>
+    <ng-template pTemplate="start">
+      <li><a [routerLink]="'/contact'">Contact</a></li>
+    </ng-template>
+  </p-menu>
+  
+<p-toolbar>
+    <div class="p-toolbar-group-end">
+      <i class="pi pi-shopping-cart" style="font-size: 2rem; position: relative">
+        <span
+          *ngIf="getCartCount() > 0"
+          class="cart-badge"
+          style="
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+          "
+        >
+          {{ getCartCount() }}
+        </span>
+      </i>
+    </div>
+  </p-toolbar>
+  

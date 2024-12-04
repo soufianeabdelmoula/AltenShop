@@ -24,6 +24,11 @@ import { MenuItem } from "primeng/api";
             label: 'Produits',
             icon: 'pi pi-barcode',
             routerLink: ['/products/list']
+        },
+        {
+          label: 'Contact',  // Ajout du lien "Contact"
+          icon: 'pi pi-envelope',
+          routerLink: ['/contact']  // Route vers la page de contact
         }
     ]
   }
