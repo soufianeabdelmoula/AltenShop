@@ -1,0 +1,12 @@
+:host {
+    display: block;
+    height: 100%;
+    overflow: auto;
+}
+.product-image {
+    width: 100%; /* Ajuste l'image à la largeur du conteneur */
+    max-height: 200px; /* Limite la hauteur */
+    object-fit: cover; /* Gère la mise à l'échelle sans déformation */
+    border-radius: 8px;
+  }
+  
