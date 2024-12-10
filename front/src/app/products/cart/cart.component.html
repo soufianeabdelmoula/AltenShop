@@ -1,17 +1,22 @@
-
-<!-- Si cartItems$ contient des éléments, affichez les produits du panier, sinon affichez "panier vide" -->
 <div *ngIf="cartItems$ | async as cartItems; else emptyCart">
   <div *ngIf="cartItems.length > 0">
-    <h2>Panier</h2>
-    <ul>
-      <li *ngFor="let item of cartItems">
-        {{ item.name }} - {{ item.price | currency }}
-        <button (click)="removeFromCart(item.id.toString())" class="p-button-danger">Supprimer</button>
-      </li>
-    </ul>
+    <h2 class="cart-title">Votre Panier</h2>
+    <div class="cart-items">
+      <div *ngFor="let item of cartItems" class="cart-item">
+        <div class="cart-item-info">
+          <img [src]="item.image" alt="{{ item.name }}" class="cart-item-image" />
+          <div class="cart-item-details">
+            <h4>{{ item.name }}</h4>
+            <p class="cart-item-price">{{ item.price | currency }}</p>
+          </div>
+        </div>
+        <button (click)="removeFromCart(item.id.toString())" class="remove-button">Supprimer</button>
+      </div>
+    </div>
+  
   </div>
 </div>
 
 <ng-template #emptyCart>
-  <p>Votre panier est vide.</p>
+  <p class="empty-cart-message">Votre panier est vide.</p>
 </ng-template>

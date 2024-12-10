@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../data-access/cart.service';
-import { CommonModule } from '@angular/common';
 import { Product } from '../data-access/product.model';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
-  standalone: true,  
-  imports: [CommonModule] 
+  standalone: true,
+  imports: [CommonModule],
 })
 export class CartComponent implements OnInit {
   private cartItemsSubject: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);  // Initialisation avec un tableau vide
   cartItems$: Observable<Product[]>;
+  totalPrice: number = 0;  // Variable pour stocker le total
 
   constructor(private cartService: CartService) {
     // cartItems$ est un observable qui contient les éléments du panier
@@ -21,7 +22,8 @@ export class CartComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadCartItems();  // Charger les articles du panier au démarrage
+    this.loadCartItems();
+    this.calculateTotal();
   }
 
   // Charger les produits du panier depuis localStorage
@@ -33,10 +35,12 @@ export class CartComponent implements OnInit {
 
   removeFromCart(productId: string): void {
     this.cartService.removeFromCart(productId);
+    this.calculateTotal();  // Recalculer le total après suppression
   }
 
-  // Obtenez le nombre de produits dans le panier
-  getCartCount() {
-    return this.cartItemsSubject.value.length;  // Utilisez cartItemsSubject pour obtenir le nombre
+  // Calculer le total des produits dans le panier
+  calculateTotal() {
+    const items = this.cartItemsSubject.value;
+    this.totalPrice = items.reduce((sum, item) => sum + item.price, 0);
   }
 }
